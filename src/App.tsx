@@ -34,7 +34,7 @@ export const App: React.FC = () => {
   const [activeWorkspace, setActiveWorkspace] = useState<'public' | 'restaurant' | 'ngo' | 'volunteer'>('public');
   const [selectedRole, setSelectedRole] = useState<UserRole>('restaurant');
   const [initialEmail, setInitialEmail] = useState('');
-  
+
   // Realtime Reactive Donation & Notification Store
   const {
     donations,
@@ -57,6 +57,7 @@ export const App: React.FC = () => {
   };
 
   // Sync workspace with authenticated role when user logs in
+  //test
   useEffect(() => {
     if (user && role) {
       if (role === 'restaurant' || role === 'ngo' || role === 'volunteer') {
@@ -103,7 +104,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#f7f9f6] text-[#12261b] flex flex-col selection:bg-[#c8f34d] selection:text-[#12261b]">
-      
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#142e20] text-white shadow-forest border border-emerald-700/40 animate-in slide-in-from-bottom-4 duration-300">
