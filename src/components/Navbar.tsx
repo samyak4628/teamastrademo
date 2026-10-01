@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Menu, 
   X, 
-  Globe, 
-  ChevronDown, 
-  Check, 
+  ChevronDown,
   LogIn, 
   ArrowRight,
   Bell,
@@ -32,10 +30,7 @@ interface NavbarProps {
   onOpenSettings?: () => void;
 }
 
-const languages = [
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'hi', label: 'हिन्दी (Hindi)', flag: '🇮🇳' },
-];
+
 
 export const Navbar: React.FC<NavbarProps> = ({ 
   onOpenOnboarding, 
@@ -45,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenNotifications,
   activeWorkspaceView = 'public',
   onSelectWorkspace,
-  onLanguageChange,
+  onLanguageChange: _onLanguageChange,
   onOpenProfile,
   onOpenSettings,
 }) => {
@@ -53,9 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLangOpen, setIsLangOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState('English');
 
   // Detect scroll to adjust navbar background
   useEffect(() => {
@@ -70,9 +63,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (!target.closest('#language-dropdown-container')) {
-        setIsLangOpen(false);
-      }
       if (!target.closest('#profile-dropdown-container')) {
         setIsProfileMenuOpen(false);
       }
@@ -89,14 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { name: 'For NGOs', href: '#ngos' },
   ];
 
-  const handleSelectLang = (langLabel: string) => {
-    const short = langLabel.split(' ')[0];
-    setSelectedLang(short);
-    setIsLangOpen(false);
-    if (onLanguageChange) {
-      onLanguageChange(langLabel);
-    }
-  };
+
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
@@ -292,45 +275,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
 
 
-          {/* Language Selector */}
-          <div className="relative hidden md:block shrink-0" id="language-dropdown-container">
-            <button
-              type="button"
-              onClick={() => setIsLangOpen(!isLangOpen)}
-              className="flex items-center gap-1 text-xs font-medium text-[#465b4f] hover:text-[#142e20] hover:bg-emerald-500/10 px-2 py-1.5 rounded-full transition-colors duration-150 whitespace-nowrap"
-              aria-expanded={isLangOpen}
-              aria-label="Select Language"
-            >
-              <Globe className="w-3.5 h-3.5 text-emerald-800" />
-              <span className="hidden xl:inline">{selectedLang}</span>
-              <span className="xl:hidden">{selectedLang.slice(0, 2).toUpperCase()}</span>
-              <ChevronDown className="w-3 h-3 text-[#465b4f]" />
-            </button>
-
-            {isLangOpen && (
-              <div className="absolute right-0 mt-2 w-44 rounded-2xl bg-white shadow-soft border border-emerald-900/10 py-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="px-3 py-1 text-[10px] font-semibold text-emerald-900/60 uppercase tracking-wider">
-                  Select Language
-                </div>
-                {languages.map((lang) => (
-                  <button
-                    key={lang.code}
-                    type="button"
-                    onClick={() => handleSelectLang(lang.label)}
-                    className="w-full flex items-center justify-between px-3 py-1.5 text-xs text-[#142e20] hover:bg-[#f2f7ef] transition-colors"
-                  >
-                    <span className="flex items-center gap-2">
-                      <span>{lang.flag}</span>
-                      <span>{lang.label}</span>
-                    </span>
-                    {selectedLang.startsWith(lang.label.split(' ')[0]) && (
-                      <Check className="w-3.5 h-3.5 text-emerald-700 font-bold" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
 
           {/* User Profile or Guest Auth Actions */}
           {user ? (
@@ -578,19 +522,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             )}
 
-            {/* Language on Mobile */}
-            <div className="pt-1">
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setIsLangOpen(!isLangOpen)}
-                  className="w-full py-2 px-3 text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl text-center flex items-center justify-center gap-1.5"
-                >
-                  <Globe className="w-3.5 h-3.5 text-emerald-800" />
-                  <span>Language: {selectedLang}</span>
-                </button>
-              </div>
-            </div>
+
 
             {/* Mobile Actions: Profile shortcuts or Sign In/Up */}
             {user ? (
